@@ -1,0 +1,9 @@
+-- 1070. Product Sales Analysis III
+WITH ranked_sales AS (
+SELECT *, 
+RANK() OVER(PARTITION BY product_id ORDER BY year) AS rank_num
+FROM Sales
+)
+SELECT product_id, year as first_year, quantity, price
+FROM ranked_sales
+WHERE rank_num = 1;
