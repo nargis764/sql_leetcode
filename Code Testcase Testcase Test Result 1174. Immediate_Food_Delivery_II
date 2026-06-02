@@ -1,0 +1,20 @@
+-- 1174. Immediate Food Delivery II
+-- my solution using CTE, window functions and aggregations
+
+WITH ranked_order AS (
+ SELECT customer_id, 
+        order_date, 
+        customer_pref_delivery_date,
+        ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY order_date) AS row_num
+ FROM Delivery
+),
+immediate_count AS (
+    SELECT customer_id,
+           COUNT(*) AS total_count,
+           COUNT(CASE WHEN order_date  = customer_pref_delivery_date THEN 1 END) AS immediate_count
+    FROM ranked_order
+    WHERE row_num = 1
+    GROUP BY customer_id
+)
+SELECT ROUND(100*(SUM(immediate_count)/SUM(total_count)), 2) AS immediate_percentage
+FROM immediate_count
