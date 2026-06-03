@@ -5,4 +5,4 @@ FROM Employee
 GROUP BY managerId
 HAVING COUNT(id) >= 5
 ) t
-LEFT JOIN Employee e ON e.id = t.managerId
+JOIN Employee e ON e.id = t.managerId
