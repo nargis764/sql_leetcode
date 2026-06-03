@@ -1,0 +1,8 @@
+-- 570. Managers with at Least 5 Direct Reports
+SELECT name FROM (
+SELECT managerId, COUNT(id) AS total_employees
+FROM Employee
+GROUP BY managerId
+HAVING COUNT(id) >= 5
+) t
+LEFT JOIN Employee e ON e.id = t.managerId
