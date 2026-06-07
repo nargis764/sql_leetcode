@@ -1,0 +1,7 @@
+-- 1633. Percentage of Users Attended a Contest
+
+SELECT contest_id, ROUND(100.0 * COUNT(*) / (SELECT COUNT(DISTINCT user_id) FROM Users), 2) AS percentage
+FROM Users
+JOIN Register USING (user_id)
+GROUP BY contest_id
+ORDER BY percentage DESC, contest_id
