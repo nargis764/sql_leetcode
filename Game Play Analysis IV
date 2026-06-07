@@ -1,0 +1,15 @@
+-- 550. Game Play Analysis IV
+
+WITH cte_1 AS (
+    SELECT *,    
+    ROW_NUMBER() OVER(PARTITION BY player_id ORDER BY event_date) AS row_num,
+    LEAD(event_date) OVER(PARTITION BY player_id)- event_date AS day_diff
+FROM Activity
+),
+cte_2 AS (
+SELECT player_id, SUM(CASE WHEN day_diff = 1 THEN 1 ELSE 0 END) AS repeated_players
+FROM cte_1
+WHERE row_num = 1 
+GROUP BY player_id
+)
+SELECT ROUND(SUM(repeated_players) / COUNT(DISTINCT player_id), 2) AS fraction FROM cte_2
