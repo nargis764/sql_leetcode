@@ -1,0 +1,8 @@
+-- 619. Biggest Single Number
+SELECT max(num) AS num
+FROM (
+    SELECT num, 
+      COUNT(*) AS num_count 
+FROM MyNumbers
+GROUP BY num
+)
