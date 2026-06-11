@@ -1,0 +1,15 @@
+-- Write your PostgreSQL query statement below
+ WITH cte_1 AS (
+    SELECT person_name, 
+           turn,
+           SUM(weight) OVER(ORDER BY turn) AS total_running_weight       
+FROM Queue
+ORDER BY turn),
+cte_2 AS (
+    SELECT person_name, ROW_NUMBER() OVER(ORDER BY turn DESC) AS person_rank
+FROM cte_1
+WHERE total_running_weight <= 1000 
+)
+SELECT person_name 
+FROM cte_2
+WHERE person_rank = 1
